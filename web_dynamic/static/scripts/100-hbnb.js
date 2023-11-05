@@ -17,7 +17,7 @@ $(document).ready(function () {
     h4.text(Object.values(checkedAmenities).join(', '));
   });
 
-  $.get('http://localhost:5001/api/v1/status/', function (data, textStatus) {
+  $.get('http://0.0.0.0:5001/api/v1/status/', function (data, textStatus) {
     if (textStatus === 'success') {
       if (data.status === 'OK') {
         $('#api_status').addClass('available');
@@ -44,7 +44,7 @@ $(document).ready(function () {
 
   function fetchPlaces (data) {
     $.ajax({
-      url: 'http://localhost:5001/api/v1/places_search',
+      url: 'http://0.0.0.0:5001/api/v1/places_search',
       type: 'POST',
       headers: { 'Content-Type': 'application/json' },
       data: JSON.stringify(data),

@@ -46,6 +46,21 @@ button:hover {
     width: 25%;
     border-right: 1px solid #DDDDDD;
 }
+
+.locations input{
+    margin-right: 10px;
+}
+
+.locations .popover ul li input{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.locations .popover ul li h2 {
+display: inline-block;
+vertical-align: middle;
+}
+
 .amenities {
     height: 100%;
     width: 25%;

@@ -1,7 +1,9 @@
 $(document).ready(function () {
   const checkedAmenities = {};
+  const checkedStates = {};
+  const checkedCities = {};
 
-  $('input[type="checkbox"]').change(function () {
+  $('.amenities input[type="checkbox"]').change(function () {
     const amenityID = $(this).data('id');
     const amenityName = $(this).data('name');
 
@@ -15,7 +17,7 @@ $(document).ready(function () {
     h4.text(Object.values(checkedAmenities).join(', '));
   });
 
-  $.get('http://0.0.0.0:5001/api/v1/status/', function (data, textStatus) {
+  $.get('http://localhost:5001/api/v1/status/', function (data, textStatus) {
     if (textStatus === 'success') {
       if (data.status === 'OK') {
         $('#api_status').addClass('available');
@@ -42,7 +44,7 @@ $(document).ready(function () {
 
   function fetchPlaces (data) {
     $.ajax({
-      url: 'http://0.0.0.0:5001/api/v1/places_search',
+      url: 'http://localhost:5001/api/v1/places_search',
       type: 'POST',
       headers: { 'Content-Type': 'application/json' },
       data: JSON.stringify(data),
@@ -58,9 +60,40 @@ $(document).ready(function () {
     });
   }
 
+  $('div.locations > div.popover > ul > li > input[type="checkbox"]').change(function () {
+    const stateID = $(this).data('id');
+    const stateName = $(this).data('name');
+
+    if ($(this).prop('checked')) {
+      checkedStates[stateID] = stateName;
+    } else {
+      delete checkedStates[stateID];
+    }
+
+    const h4 = $('.locations h4');
+    h4.text(Object.values(checkedStates).join(', '));
+  });
+
+  $('.locations ul ul li input[type="checkbox"]').change(function () {
+    const cityID = $(this).data('id');
+    const cityName = $(this).data('name');
+
+    if ($(this).prop('checked')) {
+      checkedCities[cityID] = cityName;
+    } else {
+      delete checkedCities[cityID];
+    }
+  });
+
   fetchPlaces({}); // Fetch all places on page load
 
   $('button').on('click', function () {
-    fetchPlaces({ amenities: Object.keys(checkedAmenities) }); // Fetch places with selected amenities on button click
+    const data = {
+      amenities: Object.keys(checkedAmenities),
+      states: Object.keys(checkedStates),
+      cities: Object.keys(checkedCities)
+    };
+    console.log(JSON.stringify(data));
+    fetchPlaces(data);
   });
 });
